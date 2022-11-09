@@ -1,5 +1,6 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { PasswordDTO } from '../dtos/PasswordDTO';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface PasswordsProviderProps {
     children: ReactNode;
@@ -24,6 +25,15 @@ export function PasswordsProvider ({ children, }: PasswordsProviderProps) {
     const passwordsFiltered = passwordList.filter(pass => pass.id !== idPassword)
     setPasswordList(passwordsFiltered)
   }
+
+  useEffect(() => {
+    AsyncStorage.getItem('@lockpick_passwords')
+      .then(passwords => passwords && setPasswordList(JSON.parse(passwords)))
+  }, [])
+
+  useEffect(() => {
+    AsyncStorage.setItem('@lockpick_passwords', JSON.stringify(passwordList))
+  }, [passwordList.length])
 
   return (
     <PasswordsContext.Provider

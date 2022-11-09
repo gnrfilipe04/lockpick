@@ -49,6 +49,8 @@ export function Home(){
           </Center>
           : <SwipeListView 
           data={passwordList}
+          showsVerticalScrollIndicator={false}
+          style={{ height: '80%' }}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
             <>

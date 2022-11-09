@@ -44,7 +44,9 @@ export function InsertName(){
               bgColor={'transparent'}
               placeholderTextColor={'primary.500'} 
               w={"110%"} 
-              type="text" 
+              type="text"
+              fontFamily={'Inter_400Regular'}
+              fontSize={'16px'} 
               placeholder="Insira seu primeiro nome"
               _focus={{
                 placeholderTextColor: 'primary.50',
