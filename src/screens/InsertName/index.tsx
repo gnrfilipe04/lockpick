@@ -14,7 +14,7 @@ export function InsertName(){
     }
 
     if(value.length > 10){
-      return setErrorMessage('Não pode ser maior que 8 caracteres')
+      return setErrorMessage('Não pode ser maior que 10 caracteres')
     }
 
     setErrorMessage('')
