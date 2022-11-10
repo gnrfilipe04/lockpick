@@ -35,7 +35,7 @@ export function InsertName(){
   return (
     <Center flex={1} bg={'primary.900'}>
       <VStack space={'10px'}>
-        <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Insira seu nome 😁</Text> 
+        <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Insira seu apelido</Text> 
         <FormControl  isInvalid={Boolean(errorMessage)}>
           <Stack>
             <Input
@@ -47,7 +47,7 @@ export function InsertName(){
               type="text"
               fontFamily={'Inter_400Regular'}
               fontSize={'16px'} 
-              placeholder="Insira seu primeiro nome"
+              placeholder="Apelido aqui"
               _focus={{
                 placeholderTextColor: 'primary.50',
                 borderColor: 'secondary.400'
@@ -55,7 +55,7 @@ export function InsertName(){
               value={name} 
               onChangeText={onChangeText}/>
             <FormControl.HelperText>
-              Digite seu primeiro nome no máximo 10 caracteres.
+              Digite seu apelido no máximo 10 caracteres.
             </FormControl.HelperText>
             <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
               {errorMessage}

@@ -13,7 +13,7 @@ export function usePermission(){
 
   const getAuth = async () => {
     const authMethods = await LocalAuthentication.authenticateAsync({
-      promptMessage: 'Autentique-se para entrar',
+      promptMessage: 'Autentique-se para continuar',
       fallbackLabel: 'Errou a senha',
       cancelLabel: 'Errou a senha',
     })
