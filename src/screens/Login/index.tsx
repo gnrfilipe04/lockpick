@@ -1,99 +1,78 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Center, Text, Button, VStack, HStack, AlertDialog } from "native-base";
-import { Logo } from '../../components/Logo'
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { usePermission } from '../../hooks/usePermission';
-import { startActivityAsync, ActivityAction } from 'expo-intent-launcher';
+import { useState } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { Box, Button, FormControl, Icon, Pressable, Text, VStack } from "native-base";
+import { MyInput } from "../../components/MyInput";
+import { useForm, SubmitHandler, Control  } from "react-hook-form";
+import * as yup from 'yup'  
+import { yupResolver } from '@hookform/resolvers/yup'
+
+type InputProps = {
+  email: string,
+  password: string,
+};
 
 export function Login(){
   const { navigate } = useNavigation()
-  const { getAuth, getAuthRegister } = usePermission()
+  
+  const [ showPass, setShowPass ] = useState(false)
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const createUserFormSchema = yup.object().shape({
+    email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
+    password: yup.string().required('Senha obrigatória').min(6, 'No mínimo 6 caracteres'),
+  })
 
-  const onClose = () => {
-    setIsOpen(false)
-  };
+  const { handleSubmit, formState: { errors }, control } = useForm<InputProps>({
+    resolver: yupResolver(createUserFormSchema)
+  });
 
-  const onConfirm = () => {
-    setIsOpen(false)
-    startActivityAsync(ActivityAction.SECURITY_SETTINGS);
-  };
-
-  const cancelRef = useRef(null);
-
-  const getUserName = async () => {
-    return await AsyncStorage.getItem('@lockpick_username')
-  }
-
-  const getUserLogged = async () => {
-    return await AsyncStorage.getItem('@lockpick_userLogged')
-  }
-
-  const getAuthMethods = async () => {
-    return await getAuthRegister()
-  }
-
-  async function handleNavigation(){
-    const user = await getUserName()
-
-    const authMethod = await getAuthMethods()
-
-    if(authMethod){
-      getAuth()
-        .then(async response => {
-          if(response.success){
-            const username = await getUserName()
-            AsyncStorage.setItem('@lockpick_userLogged', username || '')
-            navigate(user ? 'home' : 'insertName')
-          }
-        })
-    }else {
-      setIsOpen(!isOpen)
-    }
-  }
-
-  useEffect(() => {
-    getUserLogged()
-      .then(user => { user && handleNavigation() })
-  }, [])
+  const onSubmit: SubmitHandler<InputProps> = ( data:InputProps ) => console.log({data});
 
   return (
-    <>
-    <VStack flex={1} bg={'blueGray.900'} justifyContent={'center'}>
-      <Center>
-        <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
-          <AlertDialog.Content>
-            <AlertDialog.CloseButton />
-            <AlertDialog.Header>Padrão de segurança</AlertDialog.Header>
-            <AlertDialog.Body>
-              Não foi possível encontrar nenhum registro de padrão de segurança.
-              Adicione um registro de padrão de segurança no seu dispositivo para ter acesso ao aplicativo.
-            </AlertDialog.Body>
-            <AlertDialog.Footer>
-              <Button.Group space={2}>
-                <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
-                  Cancelar
-                </Button>
-                <Button bgColor={'secondary.400'} onPress={onConfirm}>
-                  Confirmar
-                </Button>
-              </Button.Group>
-            </AlertDialog.Footer>
-          </AlertDialog.Content>
-        </AlertDialog>
-        <Logo />
-        <VStack>
-          <Text mt={'12px'} fontSize={20} fontFamily={'Inter_400Regular'} lineHeight={20} color={'primary.500'}>Gerencie suas senhas</Text>
-          <HStack space={'8px'}>
-            <Text mt={'12px'} fontSize={20} fontFamily={'Inter_400Regular'} lineHeight={20} color={'primary.500'}>em</Text>
-            <Text mt={'12px'} fontSize={20} fontFamily={'Inter_900Black'} lineHeight={20} color={'primary.50'}>um só lugar.</Text>
-          </HStack>
-        </VStack>
-      </Center>
-      <Button mt={'49px'} onPress={handleNavigation} bg={'secondary.400'} ml={'82px'} mr={'82px'} fontFamily={'Inter_400Regular'}>Entrar</Button>
-    </VStack>
-    </>
+    <Box flex={2} bg={'primary.900'} px={'20px'} py={'50px'} >
+      <VStack space={'20px'}>
+        <FormControl isInvalid={Boolean(errors.email || errors.password)} isRequired justifyContent={'center'} h={"92%"}>
+          <VStack space={'16px'}>
+          <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Insira seus dados para entrar</Text>
+          <VStack space={'10px'}>
+            <MyInput
+              control={control as Control<any, any>}
+              name="email"
+              placeholder="E-mail"
+              errorMessage={errors.email?.message}
+            />
+
+            <MyInput
+              control={control}
+              name={"password"}
+              type={'password'}
+              secureTextEntry={!showPass}
+              InputRightElement={
+              <Pressable onPress={() => setShowPass(!showPass)}>
+                <Icon as={<MaterialCommunityIcons name={showPass ? "eye-outline" : "eye-off-outline"} />} size={5} mr="2" color="primary.500"/>
+              </Pressable>}
+              placeholder="Senha"
+              errorMessage={errors.password?.message}
+            />
+            
+          </VStack>
+          <VStack mt={'10px'} space={'10px'}>
+            <Button 
+            bg={'secondary.400'}
+            _pressed={{
+              background: 'purple.700'
+            }} 
+            onPress={handleSubmit(onSubmit)}>Entrar</Button>
+            <Button 
+            _pressed={{
+              background: 'gray.600'
+            }}  
+            bg={'primary.500'} 
+            onPress={() => navigate('welcome')}>Cancelar</Button>
+          </VStack>
+          </VStack>
+        </FormControl>
+      </VStack>
+    </Box>
   )
 }

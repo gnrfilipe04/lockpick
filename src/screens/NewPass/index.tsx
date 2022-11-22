@@ -1,6 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import { Box, Button, Text, VStack } from "native-base";
-import { Form } from "../../components/Form";
+import { Box, VStack } from "native-base";
+import { Form } from "./blocks/Form";
 
 export function NewPass(){
 

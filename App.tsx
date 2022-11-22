@@ -1,7 +1,7 @@
 import React from "react";
 import { useFonts, Inter_900Black, Inter_400Regular } from '@expo-google-fonts/inter';
 import { theme } from './src/theme'
-
+import { ignoreLogs } from './ignoreLogs'
 import {
   NativeBaseProvider, StatusBar,
 } from "native-base";
@@ -10,6 +10,8 @@ import { Routes } from "./src/routes";
 import { PasswordsProvider } from "./src/contexts/PasswordsContext";
 
 export default function App() {
+  ignoreLogs()
+
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_900Black,

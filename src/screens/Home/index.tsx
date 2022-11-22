@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Center, HStack, Icon, Pressable, Text, View, VStack } from "native-base";
+import { Box, Center, HStack, Icon, Pressable, Text, VStack } from "native-base";
 import { ListItem } from "../../components/ListItem";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
@@ -23,7 +23,7 @@ export function Home(){
 
   const onLogout = () => {
     AsyncStorage.removeItem('@lockpick_userLogged')
-      .then((_) => navigate('login'))
+      .then((_) => navigate('welcome'))
   }
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export function Home(){
           <Box>
             <HStack space={'5px'} alignItems={'center'}>
               <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Olá, {username}</Text>
-              <Icon as={MaterialCommunityIcons} name={"square-edit-outline"} size={"16px"} color={"primary.50"} onPress={() => navigate('insertName')}/>
+              <Icon as={MaterialCommunityIcons} name={"square-edit-outline"} size={"16px"} color={"primary.50"} onPress={() => navigate('register')}/>
             </HStack>
             <Text color={'primary.500'} fontFamily={'Inter_400Regular'} fontSize={'12px'}>Suas senhas cadastradas{`\n`}estão logo abaixo.</Text>
           </Box>
@@ -45,7 +45,7 @@ export function Home(){
         </HStack>
         {!passwordList.length
           ? <Center h={"70%"}>
-            <Text color={'primary.500'} fontFamily={'Inter_400Regular'} fontSize={'16px'}>Op's, não há senhas cadastradas!</Text>
+            <Text color={'primary.500'} fontFamily={'Inter_400Regular'} fontSize={'16px'}>Ops, não há senhas cadastradas!</Text>
           </Center>
           : <SwipeListView 
           data={passwordList}
@@ -80,8 +80,10 @@ export function Home(){
       </VStack>
       <Fab 
         renderInPortal={false} 
-        shadow={2} size="sm" 
-        bg={'secondary.400'} 
+        shadow={2}
+        size="sm" 
+        bg={'secondary.400'}
+        colorScheme={'purple'}
         icon={<Icon color="white" as={MaterialCommunityIcons} name="plus-thick" size="md" />} 
         onPress={() => navigate('newPass')} 
       />

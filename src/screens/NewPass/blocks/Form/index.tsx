@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { FormControl, Input, VStack, Select, Button, Pressable, Icon, Text, WarningOutlineIcon } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { usePasswords } from "../../contexts/PasswordsContext";
-import { socialIcons } from "../../mock/socialIcons";
-import { PasswordDTO } from "../../dtos/PasswordDTO";
+import { usePasswords } from "../../../../contexts/PasswordsContext";
+import { socialIcons } from "../../../../mock/socialIcons";
+import { PasswordDTO } from "../../../../dtos/PasswordDTO";
 import uuid from 'react-native-uuid'
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MyInput } from "../../../../components/MyInput";
 
 export interface FormDataProps {
   category: string
@@ -68,38 +69,19 @@ export function Form(){
             <Select.Item key={iconName} label={iconName} value={iconName}/>
           ))}
         </Select>
-        <Input
-          borderColor={'primary.500'}
-          selectionColor={'secondary.400'}  
-          bgColor={'transparent'}
-          placeholderTextColor={'primary.500'}
-          fontFamily={'Inter_400Regular'}
-          fontSize={'16px'} 
-          _focus={{
-            placeholderTextColor: 'primary.50',
-            borderColor: 'secondary.400'
-          }} 
+        <MyInput
           placeholder="Descrição"
           value={formData.description}
           onChangeText={(value) => setData({...formData, description: value})}
         />
-        <Input 
-          borderColor={'primary.500'}
-          selectionColor={'secondary.400'}  
-          bgColor={'transparent'}
-          placeholderTextColor={'primary.500'}
-          fontFamily={'Inter_400Regular'}
-          fontSize={'16px'} 
+        <MyInput 
           type={'password'}
           secureTextEntry={!showPass}
           InputRightElement={
           <Pressable onPress={() => setShowPass(!showPass)}>
             <Icon as={<MaterialCommunityIcons name={showPass ? "eye-outline" : "eye-off-outline"} />} size={5} mr="2" color="primary.500"/>
           </Pressable>}
-          _focus={{
-            placeholderTextColor: 'primary.50',
-            borderColor: 'secondary.400'
-          }} 
+          value={formData.password}
           placeholder="Senha"
           onChangeText={(value) => setData({...formData, password: value})}
         />
@@ -108,8 +90,18 @@ export function Form(){
         </FormControl.ErrorMessage>
       </VStack>
       <VStack mt={'10px'} space={'10px'}>
-        <Button bg={'secondary.400'} onPress={() => onSubmit(formData)}>Salvar</Button>
-        <Button bg={'primary.500'} onPress={() => navigate('home')}>Cancelar</Button>
+        <Button 
+        bg={'secondary.400'}
+        _pressed={{
+          background: 'purple.700'
+        }} 
+        onPress={() => onSubmit(formData)}>Salvar</Button>
+        <Button 
+        _pressed={{
+          background: 'gray.600'
+        }}  
+        bg={'primary.500'} 
+        onPress={() => navigate('home')}>Cancelar</Button>
       </VStack>
       </VStack>
     </FormControl>

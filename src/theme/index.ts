@@ -11,12 +11,12 @@ export const theme = extendTheme({
   config,
   colors: {
     primary: {
-      '50': '#F8FAFC',
-      '500': '#64748B',
-      '900': '#0F172A',
+      '50': '#fafafa',
+      '500': '#71717a',
+      '900': '#070808',
     },
     secondary: {
-      '400':'#1A91FF',
+      '400':'#9333ea',
     },
   },
 })
