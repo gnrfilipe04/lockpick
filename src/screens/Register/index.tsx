@@ -1,28 +1,28 @@
 import React, { useState } from 'react'
-import { Button, Center, FormControl, Input, Stack, Text, VStack, WarningOutlineIcon } from "native-base";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import { MyInput } from '../../components/MyInput';
-import { UserDTO } from '../../dtos/UserDTO';
+import { Button, Center, FormControl, Input, Stack, Text, VStack, WarningOutlineIcon } from 'native-base'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
+import { MyInput } from '../../components/MyInput'
+import { UserDTO } from '../../dtos/UserDTO'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'  
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from '@hookform/resolvers/yup'
 
 
 
 export function Register(){
-  const [ errorMessage, setErrorMessage ] = useState('')
-  const [ user, setUser ] = useState<UserDTO>({} as UserDTO)
-  const { navigate, goBack } = useNavigation()
+  const [ errorMessage, setErrorMessage, ] = useState('')
+  const [ user, setUser, ] = useState<UserDTO>({} as UserDTO)
+  const { navigate, goBack, } = useNavigation()
 
   const createUserFormSchema = yup.object().shape({
     email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
     password: yup.string().required('Senha obrigatória').min(6, 'No mínimo 6 caracteres'),
   })
 
-  const { handleSubmit, formState: { errors }, control } = useForm<UserDTO>({
-    resolver: yupResolver(createUserFormSchema)
-  });
+  const { handleSubmit, formState: { errors, }, control, } = useForm<UserDTO>({
+    resolver: yupResolver(createUserFormSchema),
+  })
 
   async function onSubmit(){
 
@@ -78,21 +78,21 @@ export function Register(){
           </Stack>
           <VStack space={'10px'} mt={'20px'}>
             <Button 
-            bg={'secondary.400'} 
-            disabled={Boolean(errorMessage)} 
-            opacity={errorMessage ? 0.4 : 1} 
-            w={'110%'}
-            _pressed={{
-              background: 'purple.700'
-            }}  
-            onPress={handleSubmit(onSubmit)}>Avançar</Button>
+              bg={'secondary.400'} 
+              disabled={Boolean(errorMessage)} 
+              opacity={errorMessage ? 0.4 : 1} 
+              w={'110%'}
+              _pressed={{
+                background: 'purple.700',
+              }}  
+              onPress={handleSubmit(onSubmit)}>Avançar</Button>
             <Button 
-            bg={'primary.500'} 
-            w={'110%'} 
-            _pressed={{
-              background: 'gray.600'
-            }}  
-            onPress={() => goBack()}>Voltar</Button>
+              bg={'primary.500'} 
+              w={'110%'} 
+              _pressed={{
+                background: 'gray.600',
+              }}  
+              onPress={() => goBack()}>Voltar</Button>
           </VStack>
         </FormControl>
       </VStack>

@@ -1,6 +1,6 @@
-import { FormControl, Input, WarningOutlineIcon } from "native-base";
-import { FormControlComponentType } from "native-base/lib/typescript/components/composites/FormControl/types";
-import { Controller, Control, FieldValues, Path  } from "react-hook-form";
+import React from 'react'
+import { FormControl, Input, WarningOutlineIcon } from 'native-base'
+import { Controller, Control, FieldValues, Path  } from 'react-hook-form'
 
 interface MyInputProps<T extends FieldValues> {
   control: Control<T, any>;
@@ -25,7 +25,7 @@ export function MyInput<T extends FieldValues>({
     <>
       <Controller 
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onChange, onBlur, value, }, }) => (
           <Input
             isInvalid={Boolean(errorMessage)}
             onBlur={onBlur}
@@ -40,7 +40,7 @@ export function MyInput<T extends FieldValues>({
             InputRightElement={InputRightElement}
             _focus={{
               placeholderTextColor: 'primary.50',
-              borderColor: 'secondary.400'
+              borderColor: 'secondary.400',
             }} 
             placeholder={placeholder}
             value={value}

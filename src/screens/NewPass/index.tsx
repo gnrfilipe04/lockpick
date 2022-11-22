@@ -1,5 +1,6 @@
-import { Box, VStack } from "native-base";
-import { Form } from "./blocks/Form";
+import React from 'react'
+import { Box, VStack } from 'native-base'
+import { Form } from './blocks/Form'
 
 export function NewPass(){
 

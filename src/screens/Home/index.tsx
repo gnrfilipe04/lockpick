@@ -1,34 +1,26 @@
-import { useEffect, useState } from "react";
-import { Box, Center, HStack, Icon, Pressable, Text, VStack } from "native-base";
-import { ListItem } from "../../components/ListItem";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
-import { usePasswords } from "../../contexts/PasswordsContext";
-import { Fab } from 'native-base';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { usePermission } from "../../hooks/usePermission";
+import React, { useEffect, useState } from 'react'
+import { Box, Center, HStack, Icon, Pressable, Text, VStack } from 'native-base'
+import { ListItem } from '../../components/ListItem'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+import { usePasswords } from '../../contexts/PasswordsContext'
+import { Fab } from 'native-base'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { SwipeListView } from 'react-native-swipe-list-view'
+import { usePermission } from '../../hooks/usePermission'
+import { useAuth } from '../../contexts/AuthContext'
 
 export function Home(){
-  const { navigate } = useNavigation()
-  const { passwordList, removePassword } = usePasswords()
-  const { getAuth } = usePermission()
+  const { navigate, } = useNavigation()
 
-  const [ username, setUsername ] = useState<string | null>('')
-
-  const handleUserName = async () => {
-    const usernameStorage = await AsyncStorage.getItem('@lockpick_username')
-    setUsername(usernameStorage)
-  }
+  const { user, } = useAuth()
+  const { passwordList, removePassword, } = usePasswords()
+  
+  const { getAuth, } = usePermission()
 
   const onLogout = () => {
-    AsyncStorage.removeItem('@lockpick_userLogged')
-      .then((_) => navigate('welcome'))
+    navigate('welcome')
   }
-
-  useEffect(() => {
-    handleUserName()
-  }, [])
 
   return (
     <Box flex={1} bg={'primary.900'} px={'20px'} py={'50px'} justifyContent={'space-between'}>
@@ -36,46 +28,46 @@ export function Home(){
         <HStack justifyContent={'space-between'}>
           <Box>
             <HStack space={'5px'} alignItems={'center'}>
-              <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Olá, {username}</Text>
-              <Icon as={MaterialCommunityIcons} name={"square-edit-outline"} size={"16px"} color={"primary.50"} onPress={() => navigate('register')}/>
+              <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Olá, {user.username}</Text>
+              <Icon as={MaterialCommunityIcons} name={'square-edit-outline'} size={'16px'} color={'primary.50'} onPress={() => navigate('register')}/>
             </HStack>
-            <Text color={'primary.500'} fontFamily={'Inter_400Regular'} fontSize={'12px'}>Suas senhas cadastradas{`\n`}estão logo abaixo.</Text>
+            <Text color={'primary.500'} fontFamily={'Inter_400Regular'} fontSize={'12px'}>Suas senhas cadastradas{'\n'}estão logo abaixo.</Text>
           </Box>
           <Icon as={MaterialCommunityIcons} name={'logout'} mt={'15px'} size={'24px'} color={'primary.50'} onPress={onLogout}/>
         </HStack>
         {!passwordList.length
-          ? <Center h={"70%"}>
+          ? <Center h={'70%'}>
             <Text color={'primary.500'} fontFamily={'Inter_400Regular'} fontSize={'16px'}>Ops, não há senhas cadastradas!</Text>
           </Center>
           : <SwipeListView 
-          data={passwordList}
-          showsVerticalScrollIndicator={false}
-          style={{ height: '80%' }}
-          keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => (
-            <>
-              <ListItem
-                iconColor={item.iconColor}
-                iconName={item.iconName}
-                title={item.description}
-                password={item.password}
-              />
-              <Box style={{ height: 20 }}/>
-            </>
-          )}
-          renderHiddenItem={ (data) => (
-            <Pressable onPress={() => {
-              getAuth()
-                .then(response => {
-                  response.success && removePassword(String(data.item.id))
-                })
-            }} alignItems={'flex-end'}>
-               <Icon as={MaterialCommunityIcons} mt={'15px'} name={"delete-outline"} size={'32px'} color={'red.500'}/>
-            </Pressable>
-        )}
-        rightOpenValue={-75}
+            data={passwordList}
+            showsVerticalScrollIndicator={false}
+            style={{ height: '80%', }}
+            keyExtractor={(item) => String(item.id)}
+            renderItem={({ item, }) => (
+              <>
+                <ListItem
+                  iconColor={item.iconColor}
+                  iconName={item.iconName}
+                  title={item.description}
+                  password={item.password}
+                />
+                <Box style={{ height: 20, }}/>
+              </>
+            )}
+            renderHiddenItem={ (data) => (
+              <Pressable onPress={() => {
+                getAuth()
+                  .then(response => {
+                    response.success && removePassword(String(data.item.id))
+                  })
+              }} alignItems={'flex-end'}>
+                <Icon as={MaterialCommunityIcons} mt={'15px'} name={'delete-outline'} size={'32px'} color={'red.500'}/>
+              </Pressable>
+            )}
+            rightOpenValue={-75}
 
-        />
+          />
         }
       </VStack>
       <Fab 

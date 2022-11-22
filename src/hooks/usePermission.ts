@@ -1,4 +1,4 @@
-import * as LocalAuthentication from 'expo-local-authentication';
+import * as LocalAuthentication from 'expo-local-authentication'
 
 export function usePermission(){
   const getAuthAvailable = async () => {
@@ -23,6 +23,6 @@ export function usePermission(){
   return {
     getAuthAvailable,
     getAuthRegister,
-    getAuth
+    getAuth,
   }
 }
