@@ -7,6 +7,7 @@ import { UserDTO } from '../../dtos/UserDTO'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'  
 import { yupResolver } from '@hookform/resolvers/yup'
+import { PageTitle } from '../../components/Title'
 
 
 
@@ -38,7 +39,7 @@ export function Register(){
   return (
     <Center flex={1} bg={'primary.900'}>
       <VStack space={'10px'}>
-        <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Insira seu apelido</Text> 
+        <PageTitle text='Criar conta'/>
         <FormControl>
           <Stack space={'10px'}>
             <MyInput

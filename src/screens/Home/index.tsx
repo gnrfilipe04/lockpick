@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { usePermission } from '../../hooks/usePermission'
 import { useAuth } from '../../contexts/AuthContext'
+import { PageTitle } from '../../components/Title'
 
 export function Home(){
   const { navigate, } = useNavigation()
@@ -28,12 +29,12 @@ export function Home(){
         <HStack justifyContent={'space-between'}>
           <Box>
             <HStack space={'5px'} alignItems={'center'}>
-              <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Olá, {user.username}</Text>
+              <PageTitle text={`Olá ${user.username}`} />
               <Icon as={MaterialCommunityIcons} name={'square-edit-outline'} size={'16px'} color={'primary.50'} onPress={() => navigate('register')}/>
             </HStack>
             <Text color={'primary.500'} fontFamily={'Inter_400Regular'} fontSize={'12px'}>Suas senhas cadastradas{'\n'}estão logo abaixo.</Text>
           </Box>
-          <Icon as={MaterialCommunityIcons} name={'logout'} mt={'15px'} size={'24px'} color={'primary.50'} onPress={onLogout}/>
+          <Icon as={MaterialCommunityIcons} name={'cog-outline'} mt={'15px'} size={'24px'} color={'primary.50'} onPress={onLogout}/>
         </HStack>
         {!passwordList.length
           ? <Center h={'70%'}>

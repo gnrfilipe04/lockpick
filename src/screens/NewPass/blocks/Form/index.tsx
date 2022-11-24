@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import { FormControl, Input, VStack, Select, Button, Pressable, Icon, Text, WarningOutlineIcon } from 'native-base'
+import { FormControl, VStack, Select, Button, Pressable, Icon, WarningOutlineIcon } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 import { usePasswords } from '../../../../contexts/PasswordsContext'
 import { socialIcons } from '../../../../mock/socialIcons'
@@ -8,6 +8,7 @@ import { PasswordDTO } from '../../../../dtos/PasswordDTO'
 import uuid from 'react-native-uuid'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { MyInput } from '../../../../components/MyInput'
+import { PageTitle } from '../../../../components/Title'
 
 export interface FormDataProps {
   category: string
@@ -49,7 +50,7 @@ export function Form(){
   return (
     <FormControl isInvalid={Boolean(errorMessage)} isRequired justifyContent={'center'} h={'92%'}>
       <VStack space={'16px'}>
-        <Text color={'primary.50'} fontFamily={'Inter_900Black'} fontSize={'32px'}>Nova senha</Text>
+        <PageTitle text={'Nova senha'}/>
         <VStack space={'10px'}>
           <Select
             opacity={1}
